@@ -1,0 +1,11 @@
+FROM --platform=arm64 tedli/alpine-glibc:3.14.0
+LABEL version="1.0"
+LABEL description="jdk-8u301 aarch64"
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
+RUN apk add --allow-untrusted gettext
+ADD ./jdk-8u301-linux-aarch64.tar.gz /java/
+ENV TZ Asia/Shanghai
+RUN apk add --update --no-cache \
+    tzdata && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+ENV JAVA_HOME /java/jdk1.8.0_301
+ENV PATH $JAVA_HOME/bin:$PATH
